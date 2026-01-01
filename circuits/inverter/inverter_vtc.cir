@@ -1,0 +1,22 @@
+* CMOS Inverter VTC - Ngspice (Windows)
+VDD vdd 0 DC 3.3
+Vin in 0 DC 0
+
+* Simple Level 1 models (no external files needed)
+.model nmos nmos (vto=0.7 kp=120e-6)
+.model pmos pmos (vto=-0.7 kp=40e-6)
+
+M1 out in 0 0 nmos W=1u L=0.5u
+M2 out in vdd vdd pmos W=2u L=0.5u
+
+* DC sweep
+.dc Vin 0 3.3 0.01
+
+.control
+  run
+  setplot dc1
+  plot v(out)
+  wrdata vtc_data.txt v(in) v(out)
+.endc
+
+.end
